@@ -69,7 +69,7 @@ public class AutorServicios {
         }
     }
 
-    //metodo para dar de baja autor / 
+    //metodo para dar de baja autor / (casi como eliminar)
     @Transactional
     public void bajaAutor(String id){
         Optional<Autor> respuesta = autorRepositorio.findById(id);
