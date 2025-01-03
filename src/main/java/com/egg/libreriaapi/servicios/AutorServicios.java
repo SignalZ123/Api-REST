@@ -7,11 +7,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.egg.libreriaapi.entidades.Autor;
 import com.egg.libreriaapi.repositorio.AutorRepositorio;
 
-import jakarta.transaction.Transactional;
+
 
 @Service
 public class AutorServicios {
@@ -47,7 +48,7 @@ public class AutorServicios {
     }
 
     //Metodo para listar todos los autores
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Autor> listarAutores(){
         List<Autor> autores = new ArrayList<>();
 

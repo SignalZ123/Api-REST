@@ -1,12 +1,17 @@
 package com.egg.libreriaapi.servicios;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;//para usas el "readOnly = true"
 
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.repositorio.EditorialRepositorio;
 
-import jakarta.transaction.Transactional;
+
 
 @Service
 public class EditorialServicios {
@@ -25,7 +30,56 @@ public class EditorialServicios {
         editorialRepositorio.save(editorial);
     }
 
-    
+    //Metodo para obtener una Editorial por ID
+    @Transactional
+    public Editorial editorialPorId(UUID id) throws Exception{
+
+        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
+        
+
+        if (respuesta.isPresent()) {
+
+            //obtener los atributos y guardarlos en 'editorial'
+            Editorial editorial = respuesta.get();
+            return editorial;
+            
+        }else{
+            throw new Exception ("Editorial no encontrada");
+        }
+    }
+
+    //metodo para listar todas las editoriales
+    @Transactional(readOnly = true)
+    public List<Editorial> listaEditoriales(){
+        return editorialRepositorio.findAll();
+    }
+
+    //metodo para dar de baja una editorial por ID
+    @Transactional
+    public void darBajaEditorial(UUID id){
+        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
+        
+        if (respuesta.isPresent()) {
+
+            Editorial editorial = respuesta.get();
+            editorial.setEditorialActiva(false);
+
+            editorialRepositorio.save(editorial);
+        }
+    }
+
+    //metodo para actualizar el nombre de la editorial    
+    @Transactional
+    public void modificarEditorial(UUID id, String nuevonombre) {
+        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
+
+        if (respuesta.isPresent()){
+            Editorial editorial = respuesta.get();
+
+            editorial.setNombreEditorial(nuevonombre);
+            editorialRepositorio.save(editorial);
+        }
+    }
 
     
 }
