@@ -25,11 +25,11 @@ public class AutorControlador {
         try {
             autorServicios.crearAutor(nombre);
             //Si la creación del autor es exitosa, devuelve una respuesta HTTP con estado 200 (OK).
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Autor creado correctamente", HttpStatus.OK);
 
         } catch (Exception e) {
             //Si ocurre alguna excepción durante la creación del autor, devuelve una respuesta HTTP con estado 500 (Internal Server Error). 
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al crear un nuevo Autor",HttpStatus.INTERNAL_SERVER_ERROR);
         
         }
     }
