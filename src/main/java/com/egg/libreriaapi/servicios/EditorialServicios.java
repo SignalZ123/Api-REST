@@ -33,12 +33,9 @@ public class EditorialServicios {
     //Metodo para obtener una Editorial por ID
     @Transactional
     public Editorial editorialPorId(UUID id) throws Exception{
-
         Optional<Editorial> respuesta = editorialRepositorio.findById(id);
-        
 
         if (respuesta.isPresent()) {
-
             //obtener los atributos y guardarlos en 'editorial'
             Editorial editorial = respuesta.get();
             return editorial;

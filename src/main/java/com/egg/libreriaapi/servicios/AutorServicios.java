@@ -59,7 +59,7 @@ public class AutorServicios {
 
     //metodo modificar autor
     @Transactional
-    private void modificarAutor(String nombre, String id){
+    public void modificarAutor(String nombre, String id){
         Optional<Autor> respuesta = autorRepositorio.findById(id);
 
         if (respuesta.isPresent()) {//si se encuentra el objeto por id
@@ -84,12 +84,21 @@ public class AutorServicios {
     }
 
     @Transactional
-    public void actualizarAutor(String id, String nuevoNombre){
+    public void darBajaAutorPorNombre(String nombre) throws Exception{
+        Optional<Autor> respuesta = autorRepositorio.buscarAutorPorNombre(nombre);
+
+        if (respuesta.isPresent() || respuesta != null) {
+            Autor autor = respuesta.get();
+
+            autor.setAutorActivo(false); 
+            autorRepositorio.save(autor);
+        }
 
     }
 
     //Metodo para recuperar un autor //recuperamos el objeto Autor
-    @Transactional
+    //esta demas 
+    @Transactional(readOnly = true)
     public Autor getOne(String id){
         return autorRepositorio.getReferenceById(id);
     }
