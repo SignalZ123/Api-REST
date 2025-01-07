@@ -3,7 +3,9 @@ package com.egg.libreriaapi.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class AutorServicios {
 
     //metodo para  obtener autor por ID | leer por Id
     @Transactional
-    public Autor autorPorId(String id) throws Exception{
+    public Autor autorPorId(UUID id) throws Exception{
         Optional<Autor> respuesta = autorRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
@@ -59,20 +61,24 @@ public class AutorServicios {
 
     //metodo modificar autor
     @Transactional
-    public void modificarAutor(String nombre, String id){
+    public void modificarAutor(String nombre, UUID id){
         Optional<Autor> respuesta = autorRepositorio.findById(id);
 
         if (respuesta.isPresent()) {//si se encuentra el objeto por id
             Autor autor = respuesta.get();
+            System.out.println(autor);
             autor.setNombreAutor(nombre);
 
             autorRepositorio.save(autor);
+        }else{
+            throw new NoSuchElementException("No se encontró el autor con ID: " + id);
         }
+        
     }
 
     //metodo para dar de baja autor / (casi como eliminar)
     @Transactional
-    public void bajaAutor(String id){
+    public void bajaAutor(UUID id){
         Optional<Autor> respuesta = autorRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
@@ -99,7 +105,7 @@ public class AutorServicios {
     //Metodo para recuperar un autor //recuperamos el objeto Autor
     //esta demas 
     @Transactional(readOnly = true)
-    public Autor getOne(String id){
+    public Autor getOne(UUID id){
         return autorRepositorio.getReferenceById(id);
     }
 

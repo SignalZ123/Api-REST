@@ -1,5 +1,7 @@
 package com.egg.libreriaapi.Controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.egg.libreriaapi.servicios.AutorServicios;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -41,6 +44,7 @@ public class AutorControlador {
     @GetMapping("listar")//GET (cuando se recuperan datos)
     public ResponseEntity<Object> listarAutor() {
         try {
+            //equivalente a ResponseEntity<>(autorServicios.listarAutores(), HttpStatus.OK);
             return ResponseEntity.ok(autorServicios.listarAutores());
         } catch (Exception e) {
             return new ResponseEntity<>("Error al listar los autores: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,7 +52,7 @@ public class AutorControlador {
     }
 
     @PostMapping("darBajaPorId")
-    public ResponseEntity<Object> darBajaAutor(@RequestParam String id) {
+    public ResponseEntity<Object> darBajaAutor(@RequestParam UUID id) {
         try {
             autorServicios.bajaAutor(id);
             return new ResponseEntity<>("Autor dado de baja correctamente", HttpStatus.OK);
@@ -67,13 +71,18 @@ public class AutorControlador {
         }
     }
 
-    @PutMapping("modificarAutor") //y PATCH (Cuando se actualizan datos) y
-    public ResponseEntity<Object> modificarAutor(@RequestParam String nombre, @RequestParam String id) {
+    // PUT(que reemplaza por completo el recurso) y PATCH (modifica campos especificos que le indiques) y
+    @PatchMapping("modificarAutor") // PUT(que reemplaza por completo el recurso) y PATCH (modifica campos especificos que le indiques) y
+    public ResponseEntity<Object> modificarAutor(@RequestParam String nombre, @RequestParam UUID id) {
         try {
             autorServicios.modificarAutor(nombre, id);
-            return new ResponseEntity<>("Autor modificado correctamente", HttpStatus.OK);
+            return ResponseEntity.ok().build();
+            /*.build():
+             * Finaliza el constructor y devuelve un objeto ResponseEntity sin cuerpo de respuesta.
+             * equivalente a return new ResponseEntity<>(null, HttpStatus.OK);
+             */
         } catch (Exception e) {
-            return new ResponseEntity<>("Error al modificar el autor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
