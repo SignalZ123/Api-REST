@@ -14,7 +14,7 @@ import com.egg.libreriaapi.servicios.AutorServicios;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 
 //controlador de Spring MVC
 @RestController//indicamos que es un controlador tipo Rest

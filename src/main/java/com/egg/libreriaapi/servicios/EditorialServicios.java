@@ -78,5 +78,9 @@ public class EditorialServicios {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Editorial getOneEdi(UUID id){
+        return editorialRepositorio.getReferenceById(id);
+    }
     
 }
