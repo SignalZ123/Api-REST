@@ -1,4 +1,4 @@
-package com.egg.libreriaapi.models;
+package com.egg.libreriaapi.models.Libro;
 
 import lombok.Data;
 

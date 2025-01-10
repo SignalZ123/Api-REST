@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;//para usas el "readOnly = true"
 
 import com.egg.libreriaapi.entidades.Editorial;
-import com.egg.libreriaapi.models.EditorialCreateDTO;
+import com.egg.libreriaapi.models.Editorial.EditorialCreateDTO;
 import com.egg.libreriaapi.repositorio.EditorialRepositorio;
 
 

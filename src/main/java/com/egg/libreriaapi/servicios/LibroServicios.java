@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.egg.libreriaapi.entidades.Autor;
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.entidades.Libro;
-import com.egg.libreriaapi.models.LibroCreateDTO;
-import com.egg.libreriaapi.models.LibroListarActivosDTO;
+import com.egg.libreriaapi.models.Libro.LibroCreateDTO;
 import com.egg.libreriaapi.models.Libro.LibroListDTO;
+import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
 import com.egg.libreriaapi.repositorio.LibroRepositorio;
 
 @Service

@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.egg.libreriaapi.models.LibroCreateDTO;
-import com.egg.libreriaapi.models.LibroListarActivosDTO;
+import com.egg.libreriaapi.models.Libro.LibroCreateDTO;
+import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
 import com.egg.libreriaapi.servicios.LibroServicios;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.egg.libreriaapi.models.EditorialCreateDTO;
+import com.egg.libreriaapi.models.Editorial.EditorialCreateDTO;
 import com.egg.libreriaapi.servicios.EditorialServicios;
 import org.springframework.web.bind.annotation.RequestBody;
 

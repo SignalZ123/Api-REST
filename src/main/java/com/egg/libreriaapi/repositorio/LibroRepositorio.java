@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.egg.libreriaapi.entidades.Libro;
-import com.egg.libreriaapi.models.LibroListarActivosDTO;
+import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
 
 public interface LibroRepositorio extends JpaRepository<Libro, Long> {
     /* Hacemos consultas personalizadas para recuperar lista de libros activos
