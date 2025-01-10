@@ -8,14 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.models.LibroCreateDTO;
 import com.egg.libreriaapi.models.LibroListarActivosDTO;
 import com.egg.libreriaapi.servicios.LibroServicios;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -44,6 +42,7 @@ public class LibroControlador {
     }
 
     @GetMapping("listarActivos")
+    // List<LibroListarActivosDTO>: Indica que el cuerpo de la respuesta será una lista de objetos LibroListarActivosDTO.
     public ResponseEntity<List<LibroListarActivosDTO>> ListarAutores() {
         try {
             List<LibroListarActivosDTO> librosActivos = libroServicios.listarLibrosActivos();
@@ -52,7 +51,7 @@ public class LibroControlador {
         } catch (Exception e) {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-           
+            // .build(): Crea la respuesta sin un cuerpo.
         }
     }
     

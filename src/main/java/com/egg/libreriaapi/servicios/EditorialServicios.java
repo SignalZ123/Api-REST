@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;//para usas el "readOnly = true"
 
 import com.egg.libreriaapi.entidades.Editorial;
+import com.egg.libreriaapi.models.EditorialCreateDTO;
 import com.egg.libreriaapi.repositorio.EditorialRepositorio;
 
 
@@ -83,4 +84,17 @@ public class EditorialServicios {
         return editorialRepositorio.getReferenceById(id);
     }
     
+    //--------------------USANDO EL DTO
+    @Transactional
+    public void crearEditorialDTO(EditorialCreateDTO editorialCreateDTO){
+       
+        Editorial editorialNva = new Editorial();//instanciamos un objeto del tipo editorial
+
+        //asignamos nombre, pero obtemos el atributo NombreEditoriaDTO, del editorialCreateDTO
+        editorialNva.setNombreEditorial(editorialCreateDTO.getNombreEditorialDTO());
+        editorialNva.setEditorialActiva(editorialCreateDTO.isEditorialActivaDTO());
+
+        editorialRepositorio.save(editorialNva); //persistimos el dato
+
+    }
 }
