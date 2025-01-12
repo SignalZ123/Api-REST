@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.models.Libro.LibroListDTO;
 import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
+import com.egg.libreriaapi.models.Libro.LibroPorAutorDTO;
 import com.egg.libreriaapi.models.Libro.LibroPorEditorialDTO;
 
 public interface LibroRepositorio extends JpaRepository<Libro, Long> {
@@ -59,5 +60,7 @@ public interface LibroRepositorio extends JpaRepository<Libro, Long> {
       *@Param("idEditorial") : Vincula el parámetro de la consulta JPQL (:idEditorial) con el argumento del método UUID idEditorial.
       */
 
+      @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroPorAutorDTO(l.idLibro, l.titulo, l.ejemplares, l.idAutor, l.idEditorial, l.libroActivo)" +
+      "FROM Libro l WHERE l.autor.idAutor = :idAutor") List<LibroPorAutorDTO> listarPorAutor(@Param("idAutor") UUID idAutor); 
 }
 

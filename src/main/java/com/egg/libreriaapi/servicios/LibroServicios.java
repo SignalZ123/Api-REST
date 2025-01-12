@@ -96,6 +96,7 @@ public class LibroServicios {
         }
     }
 
+    // de Listar Libros sin Usar el  Repositorio
     public List<LibroListDTO> listarLibros() throws Exception{
 
         try {
@@ -111,6 +112,9 @@ public class LibroServicios {
         }
 
     }
+
+    // Listar libros usando el Repositorio
+    // public List
 
 }
  
