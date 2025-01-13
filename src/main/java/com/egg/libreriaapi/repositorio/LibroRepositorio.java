@@ -61,6 +61,9 @@ public interface LibroRepositorio extends JpaRepository<Libro, Long> {
       */
 
       @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroPorAutorDTO(l.idLibro, l.titulo, l.ejemplares, l.idAutor, l.idEditorial, l.libroActivo)" +
-      "FROM Libro l WHERE l.autor.idAutor = :idAutor") List<LibroPorAutorDTO> listarPorAutor(@Param("idAutor") UUID idAutor); 
-}
+      "FROM Libro l WHERE l.autor.idAutor = :idAutor") List<LibroPorAutorDTO> listarPorAutor(@Param("idAutor") UUID idAutor);
+      
+      @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroPorAutorDTO(l.idLibro, l.titulo, l.ejemplares, l.idAutor, l.idEditorial, l.libroActivo)"+
+      "FROM Libro l Where l.autor.idautor = :idAutor AND l.editorial.idEditorial = :idEditorial") List<LibroPorAutorDTO> listarPorAutorYEditorial(@Param("idAutor") UUID idAutor, @Param("idEditorial") UUID idEditorial);
+}   
 

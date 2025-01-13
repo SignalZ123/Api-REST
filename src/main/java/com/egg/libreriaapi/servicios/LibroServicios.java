@@ -15,6 +15,8 @@ import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.models.Libro.LibroCreateDTO;
 import com.egg.libreriaapi.models.Libro.LibroListDTO;
 import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
+import com.egg.libreriaapi.models.Libro.LibroPorAutorDTO;
+import com.egg.libreriaapi.models.Libro.LibroPorEditorialDTO;
 import com.egg.libreriaapi.repositorio.LibroRepositorio;
 
 @Service
@@ -78,7 +80,7 @@ public class LibroServicios {
         libroRepositorio.save(libroNvo);
 
     }
-    //Listar libros activos
+    //Listar libros activos Usando el DTO
     @Transactional(readOnly = true)
     public List<LibroListarActivosDTO> listarLibrosActivos(){
         return libroRepositorio.encontrarActivos();
@@ -113,8 +115,27 @@ public class LibroServicios {
 
     }
 
-    // Listar libros usando el Repositorio
-    // public List
+    // Listar libros usando el Repositorio donde se declaro la consulta requerida
+    @Transactional(readOnly = true)
+    public List<LibroListDTO> listarLibrosDTO(){
+        return libroRepositorio.listarAllLibros();
+    }
+
+    @Transactional(readOnly = true)
+    public List<LibroPorAutorDTO> listarLibrosPorAutor(UUID idAutor){
+        return libroRepositorio.listarPorAutor(idAutor);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LibroPorEditorialDTO> listarLibrosPorEditorial(UUID idEditorial){
+        return libroRepositorio.listarPorEditorial(idEditorial);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LibroPorAutorDTO> listarLibrosPorEditorialYLibros(UUID idAutor, UUID idEditorial){
+        return libroRepositorio.listarPorAutorYEditorial(idAutor, idEditorial);
+    }
+
 
 }
  
