@@ -78,6 +78,8 @@ public class EditorialControlador {
 
     //implementando el path variable-----------------------
     @GetMapping("/ListarEditorial/{id}")
+    //devolvera un objeto "ResponseEntity" que contiene una instancia de la clase 'Editorial'
+    /*idEditorial se extraera de la URL(valor que se encuentre en la posicion {id}) */
     public ResponseEntity<Editorial> listarEditorialId(@PathVariable UUID idEditorial) {
         try {
             Editorial editorial = editorialServicios.getOneEdi(idEditorial);
