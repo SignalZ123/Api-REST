@@ -1,9 +1,11 @@
 package com.egg.libreriaapi.servicios;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import com.egg.libreriaapi.entidades.Autor;
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.models.Libro.LibroCreateDTO;
+import com.egg.libreriaapi.models.Libro.LibroDarBajaDTO;
 import com.egg.libreriaapi.models.Libro.LibroListDTO;
 import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
 import com.egg.libreriaapi.models.Libro.LibroPorAutorDTO;
@@ -98,17 +101,21 @@ public class LibroServicios {
         }
     }
 
-    // de Listar Libros sin Usar el  Repositorio
+    // ddevuelve una 'Lista' de objetos de tipo 'LibroListDTO'
+    @Transactional(readOnly = true)
     public List<LibroListDTO> listarLibros() throws Exception{
 
         try {
+            /*.stream(): Convierte la lista de libros en un flujo, lo que permite aplicar operaciones secuenciales. 
+             * .map(...): Transforma cada elemento del flujo (cada libro) en un nuevo objeto LibroListDTO.
+            */
             return libroRepositorio.findAll().stream().map(libro -> new LibroListDTO(
                 libro.getIdLibro(),
                 libro.getTitulo(),
                 libro.getEjemplares(),
                 libro.getAutor().getIdAutor(),
                 libro.getEditorial().getIdEditorial(),
-                libro.getLibroActivo())).toList();
+                libro.getLibroActivo())).toList();//Convierte el flujo resultante nuevamente en una lista.
         } catch (Exception e) {
             throw new Exception("Error al obtener la lista de libros" + e.getMessage());
         }
@@ -135,6 +142,85 @@ public class LibroServicios {
     public List<LibroPorAutorDTO> listarLibrosPorEditorialYLibros(UUID idAutor, UUID idEditorial){
         return libroRepositorio.listarPorAutorYEditorial(idAutor, idEditorial);
     }
+    //-------------Dar de baja libro
+    @Transactional
+    public void darBajaLibro(Long isbn)throws Exception{
+        Optional<Libro> rptaLibro = libroRepositorio.findById(isbn);
+
+        if (rptaLibro.isPresent()) {
+            Libro libroBaja = rptaLibro.get();
+            libroBaja.setLibroActivo(false);
+            
+            libroRepositorio.save(libroBaja);
+        }else{
+            throw new Exception("No se encontro el libro");
+        }
+    }
+
+    //Dar baja Libro por titulo ----
+    @Transactional
+    public List<LibroDarBajaDTO> darBajaLibroPorTituloDTO(String titulo)throws Exception{
+        List<Libro> librosEcontrado= libroRepositorio.buscarPorTituloLista(titulo);
+
+        if (librosEcontrado == null || librosEcontrado.isEmpty()) {
+            throw new Exception("No se encontró ningun libro con el titulo proporcionado");
+        }
+
+        List<LibroDarBajaDTO> libroDTO = new ArrayList<>();
+        for (Libro libro : librosEcontrado) {
+            libro.setLibroActivo(false);
+            libroRepositorio.save(libro);
+
+            libroDTO.add(new LibroDarBajaDTO(
+                libro.getIdLibro(),
+                libro.getTitulo(),
+                libro.getEjemplares(),
+                libro.getAutor().getIdAutor(),
+                libro.getEditorial().getIdEditorial()
+            ));
+        }
+        return libroDTO;
+    }
+    @Transactional
+    public void darBajaLibroPorTitulo(String titulo) throws Exception {
+        Libro libro = libroRepositorio.buscarPorTitulo(titulo);
+        if (libro != null) {
+            libro.setLibroActivo(false);
+            libroRepositorio.save(libro);
+        } else {
+            throw new Exception("No se encontro el libro");
+        }
+    }
+
+    @Transactional
+    public void actualizarLibro(Long idLibro, String titulo, int ejemplares, UUID idAutor, UUID idEditorial) throws Exception{
+        try {
+            Optional<Libro> libroEncontrado = libroRepositorio.findById(idLibro);
+            if (libroEncontrado.isPresent()) {
+                Libro libroActualizado = libroEncontrado.get();
+
+                libroActualizado.setTitulo(titulo);
+                libroActualizado.setEjemplares(ejemplares);
+                
+                Autor autor = autorServicios.getOne(idAutor);
+                libroActualizado.setAutor(autor);
+
+                Editorial editorial = editorialServicios.getOneEdi(idEditorial);
+                libroActualizado.setEditorial(editorial);
+
+                libroRepositorio.save(libroActualizado);
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al actualizar el libro: " + e.getMessage());
+        }
+    }
+
+    //No recomendado
+    @Transactional
+    public void eliminarLibro(Long isbn){
+        libroRepositorio.deleteById(isbn);
+    }
+
 
 
 }
