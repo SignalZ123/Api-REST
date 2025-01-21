@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.models.Libro.LibroCreateDTO;
+import com.egg.libreriaapi.models.Libro.LibroDarBajaDTO;
 import com.egg.libreriaapi.models.Libro.LibroListDTO;
 import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
 import com.egg.libreriaapi.models.Libro.LibroPorAutorDTO;
 import com.egg.libreriaapi.models.Libro.LibroPorEditorialDTO;
 import com.egg.libreriaapi.servicios.LibroServicios;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -34,14 +37,11 @@ public class LibroControlador {
     // Si prefieres enviar el dato como JSON en el cuerpo de la solicitud, cambia la anotación @RequestParam por @RequestBody
     // Indica que los datos del cuerpo de la solicitud (en formato JSON, por ejemplo) deben ser convertidos automáticamente a un objeto de tipo LibroCreateDTO.
     public ResponseEntity<Object> crearLibro(@RequestBody LibroCreateDTO libroDTO) {
-
         try {
             //Llama al método crearLibro del servicio LibroServicios, pasándole el objeto libroDTO.
             libroServicios.crearLibro(libroDTO);
-
             return new ResponseEntity<>("Libro creado correctamente", HttpStatus.OK);
         } catch (Exception e) {
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"Algun dato no es correcto o es nulo, revisar. \"}");
             //Incluye un mensaje en el cuerpo de la respuesta explicando el error.
         }
@@ -138,16 +138,56 @@ public class LibroControlador {
     @PostMapping("darBajaLibro")
     public ResponseEntity<Object> darBajaLibro(@RequestBody Long isbn) {
         try {
-            
-            return ResponseEntity.ok(libroServicios.darBajaLibro(isbn));
+            libroServicios.darBajaLibro(isbn);
+            return ResponseEntity.ok("libro dado de baja correctamente");
             
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-        
+
+    @PostMapping("darBajaLibroPorTitulo")
+    public ResponseEntity<Object> darBajaLibroPorTitulo(@RequestParam String titulo) {
+        try {
+            darBajaLibroPorTitulo(titulo);
+            return ResponseEntity.ok("libro dado de baja DTO");
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    //Por ver averiguar---- tambien su servicios.
+    @PostMapping("darBajaLibroPorTituloDTO")
+    public ResponseEntity<Object> darBajaLibroPorTituloDTO(@RequestParam String titulo) {
+        try {
+            List<LibroDarBajaDTO> librobajaDTO = libroServicios.darBajaLibroPorTituloDTO(titulo);
+            return ResponseEntity.ok(librobajaDTO);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("actualizarLibro")
+    public ResponseEntity<Object> modificarLibro(@RequestParam Long idLibro, @RequestParam String titulo, @RequestParam int ejemplares, @RequestParam UUID idAutor, @RequestParam UUID idEditorial) {
+        try {
+            libroServicios.actualizarLibro(idLibro, titulo, ejemplares, idAutor, idEditorial);
+            return ResponseEntity.ok("Libro modificado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("eliminar")
+    public ResponseEntity<Object> eliminarLibro(@RequestBody long isbn) {
+        try {
+            libroServicios.eliminarLibro(isbn);
+            return ResponseEntity.ok("Libro eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     
-    
-    
+
     
 }

@@ -1,5 +1,6 @@
 package com.egg.libreriaapi.Controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.egg.libreriaapi.models.Autor.AutorDeleteDTO;
+import com.egg.libreriaapi.models.Autor.AutorListActivosDTO;
 import com.egg.libreriaapi.servicios.AutorServicios;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 //controlador de Spring MVC
@@ -40,9 +46,21 @@ public class AutorControlador {
         
         }
     }
+
+    @GetMapping("autorPorID")
+    public ResponseEntity<Object> autorPorId(@PathVariable UUID idAutor){
+        try {
+            autorServicios.autorPorId(idAutor);
+            return ResponseEntity.ok("Autor encontrado");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     
     @GetMapping("listar")//GET (cuando se recuperan datos)
-    public ResponseEntity<Object> listarAutor() {
+    public ResponseEntity<Object> listarAutores() {
         try {
             //equivalente a ResponseEntity<>(autorServicios.listarAutores(), HttpStatus.OK);
             return ResponseEntity.ok(autorServicios.listarAutores());
@@ -85,6 +103,39 @@ public class AutorControlador {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("autoresActivosDTO")
+    public ResponseEntity<List<AutorListActivosDTO>> autoresActivosDTO() {
+        try {
+            List<AutorListActivosDTO> autoresActivos = autorServicios.autoresListActivosDTO();
+            return ResponseEntity.ok(autoresActivos);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("autorEliminado")
+    public ResponseEntity<Object> autorEliminado(@RequestParam UUID idAutor){
+        try {
+            autorServicios.eliminarAutor(idAutor);
+            return ResponseEntity.ok("Autor eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("autorEliminadoDTO")
+    public ResponseEntity<Object> autorEliminadoDTO(@RequestBody AutorDeleteDTO autorDTO){
+        try {
+            autorServicios.eliminarAutorDTO(autorDTO);
+            return ResponseEntity.ok("Autor eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+
 
 
 }

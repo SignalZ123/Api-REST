@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.egg.libreriaapi.entidades.Autor;
+import com.egg.libreriaapi.models.Autor.AutorDeleteDTO;
+import com.egg.libreriaapi.models.Autor.AutorListActivosDTO;
 import com.egg.libreriaapi.repositorio.AutorRepositorio;
 
 
@@ -102,11 +104,27 @@ public class AutorServicios {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<AutorListActivosDTO> autoresListActivosDTO() throws Exception{
+        return autorRepositorio.autoresActivos();
+    }
+
     //Metodo para recuperar un autor //recuperamos el objeto Autor
     //esta demas 
     @Transactional(readOnly = true)
     public Autor getOne(UUID id){
         return autorRepositorio.getReferenceById(id);
+    }
+
+    @Transactional
+    public void eliminarAutor(UUID idAutor){
+        autorRepositorio.deleteById(idAutor);
+    }
+    
+    @Transactional
+    public void eliminarAutorDTO(AutorDeleteDTO autorDTO){
+        //obtenemos el id del autor por los getter and setter declarados en el objeto 'AutorDeleteDTO' con @Data
+        autorRepositorio.deleteById(autorDTO.getIdAutor());
     }
 
 }
