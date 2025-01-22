@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;//para usas el "
 
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.models.Editorial.EditorialCreateDTO;
+import com.egg.libreriaapi.models.Editorial.EditorialDarBajaDTO;
+import com.egg.libreriaapi.models.Editorial.EditorialDeleteDTO;
+import com.egg.libreriaapi.models.Editorial.EditorialListDTO;
 import com.egg.libreriaapi.repositorio.EditorialRepositorio;
 
 
@@ -19,7 +22,7 @@ public class EditorialServicios {
 
     @Autowired
     private EditorialRepositorio editorialRepositorio;
-
+    
     //crear editorial
     @Transactional
     public void crearEditorial(String nombre){
@@ -27,8 +30,21 @@ public class EditorialServicios {
 
         editorial.setNombreEditorial(nombre);
         editorial.setEditorialActiva(true);
-
+        
         editorialRepositorio.save(editorial);
+    }
+    //--------------------USANDO EL DTO
+    @Transactional
+    public void crearEditorialDTO(EditorialCreateDTO editorialCreateDTO){
+       
+        Editorial editorialNva = new Editorial();//instanciamos un objeto del tipo editorial
+
+        //asignamos nombre, pero obtemos el atributo NombreEditoriaDTO, del editorialCreateDTO
+        editorialNva.setNombreEditorial(editorialCreateDTO.getNombreEditorialDTO());
+        editorialNva.setEditorialActiva(editorialCreateDTO.isEditorialActivaDTO());
+
+        editorialRepositorio.save(editorialNva); //persistimos el dato
+
     }
 
     //Metodo para obtener una Editorial por ID
@@ -52,6 +68,13 @@ public class EditorialServicios {
         return editorialRepositorio.findAll();
     }
 
+    @Transactional
+    public List<EditorialListDTO> listarEditorialDTO(){
+        //imporatmos la consulta echa en el repositorio
+        return editorialRepositorio.listarEditoriales();
+    }
+
+
     //metodo para dar de baja una editorial por ID
     @Transactional
     public void darBajaEditorial(UUID id){
@@ -60,6 +83,18 @@ public class EditorialServicios {
         if (respuesta.isPresent()) {
 
             Editorial editorial = respuesta.get();
+            editorial.setEditorialActiva(false);
+
+            editorialRepositorio.save(editorial);
+        }
+    }
+
+    @Transactional
+    public void darBajaEditorialDTO(EditorialDarBajaDTO editorialBajaDTO) throws Exception{
+        Optional<Editorial> editorialRpta=editorialRepositorio.findById(editorialBajaDTO.getIdEditorial());
+
+        if (editorialRpta != null || editorialRpta.isPresent()) {
+            Editorial editorial = editorialRpta.get();
             editorial.setEditorialActiva(false);
 
             editorialRepositorio.save(editorial);
@@ -85,17 +120,13 @@ public class EditorialServicios {
         return editorialRepositorio.getReferenceById(id);
     }
     
-    //--------------------USANDO EL DTO
     @Transactional
-    public void crearEditorialDTO(EditorialCreateDTO editorialCreateDTO){
-       
-        Editorial editorialNva = new Editorial();//instanciamos un objeto del tipo editorial
+    public void eliminarEditorial(UUID id)throws Exception{
+        editorialRepositorio.deleteById(id);
+    }
 
-        //asignamos nombre, pero obtemos el atributo NombreEditoriaDTO, del editorialCreateDTO
-        editorialNva.setNombreEditorial(editorialCreateDTO.getNombreEditorialDTO());
-        editorialNva.setEditorialActiva(editorialCreateDTO.isEditorialActivaDTO());
-
-        editorialRepositorio.save(editorialNva); //persistimos el dato
-
+    @Transactional
+    public void eliminarEditorialDTO(EditorialDeleteDTO editorialEliDTO)throws Exception{
+        editorialRepositorio.deleteById(editorialEliDTO.getIdEditorial());
     }
 }
