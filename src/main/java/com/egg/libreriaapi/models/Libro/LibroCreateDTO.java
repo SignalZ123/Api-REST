@@ -17,6 +17,6 @@ public class LibroCreateDTO {
     private int ejemplares;
     private UUID idAutor;
     private UUID idEditorial;
-    private boolean libroActivo;
+    private Boolean libroActivo;
     
 }

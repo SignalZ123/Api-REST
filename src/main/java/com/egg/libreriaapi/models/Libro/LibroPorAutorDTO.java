@@ -9,12 +9,12 @@ public class LibroPorAutorDTO {
      private Long idLibro;
     private String titulo;
     private int ejemplares;
-    private boolean libroActivo;
+    private Boolean libroActivo;
     private UUID idAutor;
     private UUID idEditorial;
 
     //Constructor
-    public LibroPorAutorDTO(Long idBook, String title, int ejemplares, boolean libroActiv, UUID idAut, UUID idEdi){
+    public LibroPorAutorDTO(Long idBook, String title, int ejemplares, Boolean libroActiv, UUID idAut, UUID idEdi){
 
         this.idLibro = idBook;
         this.titulo = title;

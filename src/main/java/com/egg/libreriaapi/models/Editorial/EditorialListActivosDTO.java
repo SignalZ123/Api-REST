@@ -8,6 +8,6 @@ import lombok.Data;
 public class EditorialListActivosDTO {
     private UUID idEditorial;
     private String nombreEditorial;
-    private boolean editorialActivo;
+    private Boolean editorialActiva;
     
 }

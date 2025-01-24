@@ -13,6 +13,6 @@ public class LibroListDTO {
     private int ejemplaresDTO;
     private UUID idAutor;
     private UUID idEditorial;
-    private boolean libroActivoDTO;
+    private Boolean libroActivoDTO;
     
 }

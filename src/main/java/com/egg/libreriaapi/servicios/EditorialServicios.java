@@ -41,7 +41,7 @@ public class EditorialServicios {
 
         //asignamos nombre, pero obtemos el atributo NombreEditoriaDTO, del editorialCreateDTO
         editorialNva.setNombreEditorial(editorialCreateDTO.getNombreEditorialDTO());
-        editorialNva.setEditorialActiva(editorialCreateDTO.isEditorialActivaDTO());
+        editorialNva.setEditorialActiva(editorialCreateDTO.getEditorialActivaDTO());
 
         editorialRepositorio.save(editorialNva); //persistimos el dato
 

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.models.Libro.LibroDarBajaDTO;
@@ -14,6 +15,7 @@ import com.egg.libreriaapi.models.Libro.LibroListarActivosDTO;
 import com.egg.libreriaapi.models.Libro.LibroPorAutorDTO;
 import com.egg.libreriaapi.models.Libro.LibroPorEditorialDTO;
 
+@Repository
 public interface LibroRepositorio extends JpaRepository<Libro, Long> {
     /* Hacemos consultas personalizadas para recuperar lista de libros activos
      * 
@@ -42,7 +44,7 @@ public interface LibroRepositorio extends JpaRepository<Libro, Long> {
       * "encontrarActivos": Es el nombre del método en el repositorio que ejecutará esta consulta.
      */
      
-     @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroListDTO(l.isbnDTO, l.tituloDTO, l.ejemplaresDTO, l.idAutor, l.idEditorial, l.libroActivosDTO)" +
+     @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroListDTO(l.isbnDTO, l.tituloDTO, l.ejemplaresDTO, l.idAutor, l.idEditorial, l.libroActivoDTO)" +
      "FROM Libro l") List<LibroListDTO> listarAllLibros();
 
      //Consulta personalizada (JPQL(Java Persistence Query Language))
@@ -65,10 +67,10 @@ public interface LibroRepositorio extends JpaRepository<Libro, Long> {
       "FROM Libro l WHERE l.autor.idAutor = :idAutor") List<LibroPorAutorDTO> listarPorAutor(@Param("idAutor") UUID idAutor);
       
       @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroPorAutorDTO(l.idLibro, l.titulo, l.ejemplares, l.idAutor, l.idEditorial, l.libroActivo)"+
-      "FROM Libro l WHERE l.autor.idautor = :idAutor AND l.editorial.idEditorial = :idEditorial") List<LibroPorAutorDTO> listarPorAutorYEditorial(@Param("idAutor") UUID idAutor, @Param("idEditorial") UUID idEditorial);
+      "FROM Libro l WHERE l.autor.idAutor = :idAutor AND l.editorial.idEditorial = :idEditorial") List<LibroPorAutorDTO> listarPorAutorYEditorial(@Param("idAutor") UUID idAutor, @Param("idEditorial") UUID idEditorial);
 
 
-      //buscar por titulo
+      //buscar por titulo---por comprobar
       @Query("SELECT new com.egg.libreriaapi.models.Libro.LibroDarBajaDTO(l.isbn, l.titulo, l.ejemplares, l.idAutor, l.idEditorial)" + 
       "FROM Libro l WHERE l.titulo = :titulo") List<LibroDarBajaDTO> buscarPorTituloLista1(@Param("titulo") String titulo);
 

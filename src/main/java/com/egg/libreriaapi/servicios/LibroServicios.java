@@ -67,7 +67,7 @@ public class LibroServicios {
         libroNvo.setIdLibro(libroCreateDTO.getIsbn());
         libroNvo.setTitulo(libroCreateDTO.getTitulo());
         libroNvo.setEjemplares(libroCreateDTO.getEjemplares());
-        libroNvo.setLibroActivo(libroCreateDTO.isLibroActivo());
+        libroNvo.setLibroActivo(libroCreateDTO.getLibroActivo());
 
         //para los id de Autor
         Autor autor = autorServicios.getOne(libroCreateDTO.getIdAutor());
